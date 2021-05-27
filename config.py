@@ -197,7 +197,7 @@ def update_config(config, args):
     if args.batch_size:
         config.DATA.BATCH_SIZE = args.batch_size
     if args.data_root:
-        config.DATA.DATA_PATH = args.data_root
+        config.DATA.DATA_ROOT = args.data_root
     if args.train_csv:
         config.DATA.TRAIN_CSV = args.train_csv
     if args.val_csv:
