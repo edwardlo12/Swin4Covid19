@@ -21,9 +21,11 @@ _C.DATA = CN()
 # Batch size for a single GPU, could be overwritten by command line argument
 _C.DATA.BATCH_SIZE = 128
 # Path to dataset, could be overwritten by command line argument
-_C.DATA.DATA_PATH = ''
+_C.DATA.DATA_ROOT = ''
+_C.DATA.TRAIN_CSV = ''
+_C.DATA.VAL_CSV = ''
 # Dataset name
-_C.DATA.DATASET = 'imagenet'
+_C.DATA.DATASET = 'covid19'
 # Input image size
 _C.DATA.IMG_SIZE = 224
 # Interpolation to resize image (random, bilinear, bicubic)
@@ -194,8 +196,12 @@ def update_config(config, args):
     # merge from specific arguments
     if args.batch_size:
         config.DATA.BATCH_SIZE = args.batch_size
-    if args.data_path:
-        config.DATA.DATA_PATH = args.data_path
+    if args.data_root:
+        config.DATA.DATA_PATH = args.data_root
+    if args.train_csv:
+        config.DATA.TRAIN_CSV = args.train_csv
+    if args.val_csv:
+        config.DATA.VAL_CSV = args.val_csv
     if args.zip:
         config.DATA.ZIP_MODE = True
     if args.cache_mode:

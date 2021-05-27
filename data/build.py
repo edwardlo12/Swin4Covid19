@@ -17,7 +17,7 @@ from timm.data.transforms import _pil_interp
 
 from .cached_image_folder import CachedImageFolder
 from .samplers import SubsetRandomSampler
-
+from .covid19 import covid19Dataset
 
 def build_loader(config):
     config.defrost()
@@ -69,21 +69,23 @@ def build_loader(config):
     return dataset_train, dataset_val, data_loader_train, data_loader_val, mixup_fn
 
 
-def build_dataset(is_train, config):
+def build_dataset(is_train, config, csvFile):
     transform = build_transform(is_train, config)
-    if config.DATA.DATASET == 'imagenet':
-        prefix = 'train' if is_train else 'val'
-        if config.DATA.ZIP_MODE:
-            ann_file = prefix + "_map.txt"
-            prefix = prefix + ".zip@/"
-            dataset = CachedImageFolder(config.DATA.DATA_PATH, ann_file, prefix, transform,
-                                        cache_mode=config.DATA.CACHE_MODE if is_train else 'part')
-        else:
-            root = os.path.join(config.DATA.DATA_PATH, prefix)
-            dataset = datasets.ImageFolder(root, transform=transform)
-        nb_classes = 1000
-    else:
-        raise NotImplementedError("We only support ImageNet Now.")
+    # if config.DATA.DATASET == 'imagenet':
+    #     prefix = 'train' if is_train else 'val'
+    #     if config.DATA.ZIP_MODE:
+    #         ann_file = prefix + "_map.txt"
+    #         prefix = prefix + ".zip@/"
+    #         dataset = CachedImageFolder(config.DATA.DATA_PATH, ann_file, prefix, transform,
+    #                                     cache_mode=config.DATA.CACHE_MODE if is_train else 'part')
+    #     else:
+    #         root = os.path.join(config.DATA.DATA_PATH, prefix)
+    #         dataset = datasets.ImageFolder(root, transform=transform)
+    #     nb_classes = 4
+    # else:
+    #     raise NotImplementedError("We only support ImageNet Now.")
+    dataset = covid19Dataset(csvFile, transform, config.DATA.DATA_ROOT)
+    nb_classes = 4
 
     return dataset, nb_classes
 
